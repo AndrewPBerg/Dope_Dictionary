@@ -2,7 +2,14 @@ import os
 from dotenv import dotenv_values
 import google.generativeai as genai
 
-# Load environment variables into a dictionary
+# Load environment variables into a dictionary 
+# MUST BE IN ROOT DIRECTORY 
+# MUST BE IN ROOT DIRECTORY 
+# MUST BE IN ROOT DIRECTORY 
+# .env MUST NOT BE COMMITTED TO GIT
+# .env MUST NOT BE COMMITTED TO GIT
+# .env MUST NOT BE COMMITTED TO GIT
+
 config = dotenv_values(".env")
 
 # Configure the Gemini API
