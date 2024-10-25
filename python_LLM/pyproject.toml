@@ -1,0 +1,16 @@
+[tool.poetry]
+name = "python-llm"
+version = "0.1.0"
+description = ""
+authors = ["Andrew Berg <andberg9@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+google-generativeai = "^0.8.3"
+python-dotenv = "^1.0.1"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
