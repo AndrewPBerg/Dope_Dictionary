@@ -45,7 +45,7 @@ python example.py
 
 ## GoogleGemini API
 1. Set up a [Google Gemini API](https://ai.google.dev/gemini-api/docs/api-key) account and generate an API key. 
-2. Then one must create a `.env` file in the root directory 
+2. Then one must create a `.env` file in the `python_LLM` directory 
 3. Set the `GOOGLE_API_KEY` environment variable to their API key.
 > note the `GOOGLE_API_KEY` must be in the `.env` file to use the app. and the API key should also be in "string" format.
 
@@ -59,3 +59,6 @@ To run the app, one can use the following command:
 
 
 ...
+
+# Known Issues
+- Poetry run does not work in [cursors integrated powershell terminal](https://forum.cursor.com/t/cursor-error-cannot-find-module-windows-foreground-love/6993) :\

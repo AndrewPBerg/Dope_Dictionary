@@ -20,6 +20,7 @@ genai.configure(api_key=api_key)
 
 # Initialize the model
 model = genai.GenerativeModel('gemini-1.5-flash')
+print(f"Using model: {model}")
 
 # Function to generate content
 def generate_content(prompt):
@@ -27,6 +28,6 @@ def generate_content(prompt):
     return response.text
 
 # Example usage
-prompt = "Explain the concept of quantum computing in simple terms."
+prompt = "Define the word 'dope' in the style of a caveman."
 result = generate_content(prompt)
 print(result)
