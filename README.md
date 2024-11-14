@@ -1,4 +1,18 @@
 # Dope_Dictionary
+
+#NEW
+Web-App TODOs:
+- Andrew (file path)
+  - PROJECTS copy/project_230/dictionary/views.py
+  - here you will see where to put your code :)
+- Jason (file path)
+  - HashTableService copy/src/main/java/service/DictionaryService.java
+  - here you will see where to put your code :)
+ 
+    Your Pal,
+      Quinn :)
+
+
 TODO:
 - Description
 - Installation
@@ -49,8 +63,8 @@ python example.py
 3. Set the `GOOGLE_API_KEY` environment variable to their API key.
 > note the `GOOGLE_API_KEY` must be in the `.env` file to use the app. and the API key should also be in "string" format.
 
-## Gradle Dependencies
-This is a Jason or Quinn area of expertise.
+## Maven Dependencies
+- used for java microservice 
 ## Possibly Other Dependencies
 
 # Usage
