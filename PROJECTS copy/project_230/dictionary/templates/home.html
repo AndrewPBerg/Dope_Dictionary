@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Home</title>
+        <link rel="stylesheet" href="/static/styles.css">
+    </head>
+
+    <body>
+        <div class="container">
+            <h1>Dope Dictionary</h1>
+            
+            <form action="{% url 'get_definition_service' %}" method="GET">
+                {% csrf_token %}
+                <label for="style">Select A Fun Style:</label>
+                <select id="style" name="style" required>
+                    <option value ="N/A">N/A</option>
+                    <option value="Shakespeare">Shakespeare</option>
+                    <option value="Academic">Academic</option> <!--there can be way more options (depends on jason java code (service))-->
+                </select>
+    
+                <label for="word">Enter A Word:</label>
+                <input type="text" id="word" name="word" required>
+    
+                <button type="submit">Get Definition</button>
+            </form>
+    
+            {% if definition %}
+                <div class="definition">
+                    <h2>Definition:</h2>
+                    <p>{{ definition }}</p>
+                    <!-- <div class="fun_image"> //this will be a fun image along with results! 
+                        <img src  {% endcomment %} -->
+                </div>
+            {% endif %}
+        </div>
+    </body>
+    </html>
+    
