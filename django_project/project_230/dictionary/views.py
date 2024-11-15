@@ -6,7 +6,7 @@ import google.generativeai as genai
 
 # Create your views here.
 def home(request):
-    return render(request, "dictionary/home.html")
+    return render(request, "home.html")
 
 def get_definition_llm(style, word):
     
