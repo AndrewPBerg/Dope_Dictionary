@@ -25,11 +25,20 @@ This project uses pythons built-in `venv` to manage dependencies. Once the `venv
 
 
 ### Python Built-in Venv
+> MacOS/Linux
 ```bash
 python3 -m venv myenv
 source myenv/bin/activate
 pip install -r requirements.txt
 ```
+> Windows
+```bash
+python -m venv myenv
+.\myenv\Scripts\activate
+pip install -r requirements.txt
+```
+
+> NOTE: make sure to be in the `django_project` directory when running venv commands
 
 ### Pip (local site-packages)
 ```bash
