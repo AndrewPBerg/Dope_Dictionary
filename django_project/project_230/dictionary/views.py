@@ -1,14 +1,44 @@
 from django.shortcuts import render
 import requests
 from django.http import JsonResponse
+from dotenv import dotenv_values
+import google.generativeai as genai
 
 # Create your views here.
+def home(request):
+    return render(request, "dictionary/home.html")
+
 def get_definition_llm(style, word):
-    andrew = 
-    #gets definition from Google Gemini API 
-    #sends request to API endpoint with API KEY
     
-    #GEMINI API CODE (ANDREW)
+    # Load environment variables
+    config = dotenv_values(".env") # API KEY is stored in untracked .env file
+    
+    # Configure Gemini
+    api_key = config.get("GOOGLE_API_KEY")
+    if not api_key:
+        raise ValueError("GOOGLE_API_KEY not found in environment variables")
+    genai.configure(api_key=api_key)
+    
+    # Initialize model
+    gemini_model = genai.GenerativeModel('gemini-1.5-flash')
+    
+    # Define prompt
+    prompt = f"""
+    Define the word '{word}' in the style of (a) {style}.
+    
+    The definition should be:
+    1. Safe for work and appropriate
+    2. Clear and understandable
+    3. True to the style's characteristics
+    4. Lighthearted and funny, but also informative
+    """
+    
+    # Generate response
+    try:
+        response = gemini_model.generate_content(prompt)
+        return response.text
+    except Exception as e:
+        return f"Error generating definition: {str(e)}"
 
 def get_definition_service(request): 
     #gets definition from Java microservice (hashmap database)
