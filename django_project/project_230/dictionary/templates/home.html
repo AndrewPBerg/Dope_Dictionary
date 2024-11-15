@@ -9,7 +9,8 @@
         <div class="container">
             <h1>Dope Dictionary</h1>
             
-            <form action="{% url 'get_definition_service' %}" method="GET">
+            <!-- <form action="{% url 'get_definition_service' %}" method="GET"> -->
+            <form action="{% url 'get_definition_llm' %}" method="GET">
                 {% csrf_token %}
                 <label for="style">Select A Fun Style:</label>
                 <select id="style" name="style" required>
