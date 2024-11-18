@@ -13,9 +13,12 @@
                 {% csrf_token %}
                 <label for="style">Select A Fun Style:</label>
                 <select id="style" name="style" required>
-                    <option value="N/A">N/A</option>
-                    <option value="Shakespeare">Shakespeare</option>
-                    <option value="Academic">Academic</option>
+                    <option value="N/A" {% if selected_style == "N/A" %}selected{% endif %}>Select a Style</option>
+                    <option value="Shakespeare" {% if selected_style == "Shakespeare" %}selected{% endif %}>Shakespeare</option>
+                    <option value="Valley Girl" {% if selected_style == "Valley Girl" %}selected{% endif %}>Valley Girl</option>
+                    <option value="Pirate" {% if selected_style == "Pirate" %}selected{% endif %}>Pirate</option>
+                    <option value="Cowboy" {% if selected_style == "Cowboy" %}selected{% endif %}>Cowboy</option>
+                    <option value="Surfer" {% if selected_style == "Surfer" %}selected{% endif %}>Surfer</option>
                 </select>
     
                 <label for="word">Enter A Word:</label>

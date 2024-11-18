@@ -76,14 +76,20 @@ def get_definition_service(request):
                 if response.text != "Definition not found":
                     # Decode the URL-encoded definition before rendering
                     decoded_definition = unquote(response.text)
-                    return render(request, "home.html", {"definition": decoded_definition})
+                    return render(request, "home.html", {
+                        "definition": decoded_definition,
+                        "selected_style": style
+                    })
                 
                 # If not found, get from LLM
                 if style == "N/A":
                     return render(request, "home.html", {"definition": "Please select a style"})
                 answer_llm = get_definition_llm(style, word)
                 if "Error:" in answer_llm:
-                    return render(request, "home.html", {"definition": answer_llm})
+                    return render(request, "home.html", {
+                        "definition": answer_llm,
+                        "selected_style": style
+                    })
                     
                 # Store in Java service
                 store_response = requests.post(
@@ -97,24 +103,31 @@ def get_definition_service(request):
                 )
                 store_response.raise_for_status()
                 
-                return render(request, "home.html", {"definition": answer_llm})
+                return render(request, "home.html", {
+                    "definition": answer_llm,
+                    "selected_style": style
+                })
                 
             except requests.Timeout:
                 return render(request, "home.html", {
-                    "definition": "Service timeout - please try again"
+                    "definition": "Service timeout - please try again",
+                    "selected_style": style
                 })
             except requests.ConnectionError:
                 return render(request, "home.html", {
-                    "definition": "Cannot connect to service - please try again later"
+                    "definition": "Cannot connect to service - please try again later",
+                    "selected_style": style
                 })
             except requests.RequestException as e:
                 return render(request, "home.html", {
-                    "definition": f"Service error: {str(e)}"
+                    "definition": f"Service error: {str(e)}",
+                    "selected_style": style
                 })
                 
         except Exception as e:
             return render(request, "home.html", {
-                "definition": f"Unexpected error: {str(e)}"
+                "definition": f"Unexpected error: {str(e)}",
+                "selected_style": style if 'style' in locals() else ""
             })
             
     return render(request, "home.html")
