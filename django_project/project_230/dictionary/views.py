@@ -33,7 +33,7 @@ def get_definition_llm(style, word):
 
         # Optimize prompt to be more concise while maintaining requirements
         prompt = (
-            f"Define '{word}' in {style} style. Make it:, Safe for Work, Clear, Fun yet informative, and 1 to 2 sentences."
+            f"Define '{word}' in {style} style. Make it:, Safe for Work, Clear, Fun yet informative, end with a period, and 1 to 2 sentences."
         )
 
         # Set generation config for faster responses
@@ -43,7 +43,7 @@ def get_definition_llm(style, word):
                 'temperature': 0.5,  # Lower temperature for faster, more focused responses
                 'top_p': 0.8,       # Reduce sampling space
                 'top_k': 30,        # Limit token selection
-                'max_output_tokens': 30  # Limit response length
+                'max_output_tokens': 40  # Limit response length
             }
         )
         return (response.text)

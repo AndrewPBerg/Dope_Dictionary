@@ -9,7 +9,7 @@
         <div class="container">
             <h1>Dope Dictionary</h1>
             
-            <form action="{% url 'get_definition_service' %}" method="GET">
+            <form id="definitionForm" action="{% url 'get_definition_service' %}" method="GET">
                 {% csrf_token %}
                 <label for="style">Select A Fun Style:</label>
                 <select id="style" name="style" required>
@@ -24,6 +24,13 @@
                 <button type="submit">Get Definition</button>
             </form>
     
+            <div id="loadingContainer" class="loading-container" style="display: none;">
+                <div class="loading-bar">
+                    <div class="loading-progress"></div>
+                </div>
+                <p class="loading-text">Getting your definition...</p>
+            </div>
+    
             {% if definition %}
                 <div class="definition">
                     <h2>Definition:</h2>
@@ -31,5 +38,20 @@
                 </div>
             {% endif %}
         </div>
+
+        <script>
+            document.getElementById('definitionForm').addEventListener('submit', function(e) {
+                // Prevent the default form submission
+                e.preventDefault();
+                
+                // Show loading bar
+                document.getElementById('loadingContainer').style.display = 'block';
+                
+                // Submit the form after a small delay to ensure loading bar is visible
+                setTimeout(() => {
+                    this.submit();
+                }, 100);
+            });
+        </script>
     </body>
 </html>
