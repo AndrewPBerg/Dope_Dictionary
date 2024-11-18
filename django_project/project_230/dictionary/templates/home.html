@@ -9,14 +9,13 @@
         <div class="container">
             <h1>Dope Dictionary</h1>
             
-            <!-- <form action="{% url 'get_definition_service' %}" method="GET"> -->
-            <form action="{% url 'get_definition_llm' %}" method="GET">
+            <form action="{% url 'get_definition_service' %}" method="GET">
                 {% csrf_token %}
                 <label for="style">Select A Fun Style:</label>
                 <select id="style" name="style" required>
-                    <option value ="N/A">N/A</option>
+                    <option value="N/A">N/A</option>
                     <option value="Shakespeare">Shakespeare</option>
-                    <option value="Academic">Academic</option> <!--there can be way more options (depends on jason java code (service))-->
+                    <option value="Academic">Academic</option>
                 </select>
     
                 <label for="word">Enter A Word:</label>
@@ -29,10 +28,8 @@
                 <div class="definition">
                     <h2>Definition:</h2>
                     <p>{{ definition }}</p>
-
                 </div>
             {% endif %}
         </div>
     </body>
-    </html>
-    
+</html>

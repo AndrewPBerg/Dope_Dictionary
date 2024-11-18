@@ -13,20 +13,6 @@ Web-App TODOs:
       Quinn :)
 
 
-
-#NEW
-Web-App TODOs:
-- Andrew (file path)
-  - Documentation
-  - LLM Services
-- Jason (file path)
-  - HashTableService copy/src/main/java/service/DictionaryService.java
-  - here you will see where to put your code :)
- 
-    Your Pal,
-      Quinn :)
-
-
 TODO:
 - Description
 - Installation
@@ -75,21 +61,39 @@ GOOGLE_API_KEY="your_api_key_here"
 
 ## Maven Dependencies
 - used for java microservice 
-Example `.env` file:
-```python
-GOOGLE_API_KEY="your_api_key_here"
+- make sure maven installed
+
+```bash
+mvn --version
+```
+> if not installed, install maven from [here](https://maven.apache.org/download.cgi)
+
+### Start Maven Service
+```bash
+cd HashTableService
+```
+```bash
+mvn clean compile
+```
+> NOTE: make sure that the current java version is supported by the maven `pom.xml` file in the 
+```xml
+<properties>
+    <java.version>21</java.version>
+</properties>
+```
+> To check the current java version, run 
+```bash 
+java -version
 ```
 
-## Maven Dependencies
-- used for java microservice 
+
+> Start the maven service
+```bash
+mvn spring-boot:run
+```
+
 ## Possibly Other Dependencies
 
-# Usage
 
-To run the app, one can use the following command(s):
-To run the app, one can use the following command(s):
-
-
-...
 
 # Known Issues
