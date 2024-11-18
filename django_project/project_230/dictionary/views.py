@@ -6,6 +6,7 @@ from dotenv import load_dotenv
 import google.generativeai as genai
 import os
 from pathlib import Path
+from django.views.decorators.csrf import csrf_exempt
 
 def home(request):
     return render(request, "home.html")
@@ -50,6 +51,7 @@ def get_definition_llm(style, word):
     except Exception as e:
         return f"Error generating definition: {str(e)}"
 
+@csrf_exempt
 def get_definition_service(request): 
     if request.method == "GET":
         try:

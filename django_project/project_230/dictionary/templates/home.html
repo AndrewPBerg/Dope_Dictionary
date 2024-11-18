@@ -10,7 +10,6 @@
             <h1>Dope Dictionary</h1>
             
             <form id="definitionForm" action="{% url 'get_definition_service' %}" method="GET">
-                {% csrf_token %}
                 <label for="style">Select A Fun Style:</label>
                 <select id="style" name="style" required>
                     <option value="N/A" {% if selected_style == "N/A" %}selected{% endif %}>Select a Style</option>
