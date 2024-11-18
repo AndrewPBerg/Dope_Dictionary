@@ -1,52 +1,71 @@
 package com.example.hashtableservice.service;
 import java.io.*;
 import java.util.HashMap;
+import java.util.concurrent.locks.ReadWriteLock;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
 
-public class DictionaryService {
-    public HashMap<String, HashMap<String, String>> dictionary;
+@Service
+public class DictionaryService implements Serializable {
+    private static final long serialVersionUID = 1L;
+    private static final Logger logger = LoggerFactory.getLogger(DictionaryService.class);
+    private final HashMap<String, HashMap<String, String>> dictionary;
+    private final ReadWriteLock lock = new ReentrantReadWriteLock();
+    private static final String STORAGE_FILE = "hashmap.ser";
 
     public DictionaryService() {
         this.dictionary = new HashMap<>();
-        try {
-            loadFile();
-        } catch (Exception e) {
-            this.dictionary = new HashMap<>();
-        }
+        loadFile();
     }
 
     public String getDefinition(String style, String word) {
-        HashMap<String, String> styleMap = this.dictionary.get(style);
-        if (styleMap == null) {
-            return null;
+        lock.readLock().lock();
+        try {
+            HashMap<String, String> styleMap = this.dictionary.get(style);
+            return styleMap != null ? styleMap.get(word) : null;
+        } finally {
+            lock.readLock().unlock();
         }
-        return styleMap.get(word);
     }
 
     public void putDefinition(String style, String word, String definition) {
-        HashMap<String, String> styleMap = this.dictionary.computeIfAbsent(style, k -> new HashMap<>());
-        styleMap.put(word, definition);
-    }
-
-    public void saveFile() {
-        try (FileOutputStream fileOut = new FileOutputStream("hashmap.ser");
-             ObjectOutputStream out = new ObjectOutputStream(fileOut)) {
-            out.writeObject(this.dictionary);
-            System.out.println("HashMap serialized to hashmap.ser");
-        } catch (IOException e) {
-            e.printStackTrace();
+        lock.writeLock().lock();
+        try {
+            HashMap<String, String> styleMap = this.dictionary.computeIfAbsent(style, k -> new HashMap<>());
+            styleMap.put(word, definition);
+        } finally {
+            lock.writeLock().unlock();
         }
     }
 
-    public void loadFile() {
-        try (FileInputStream fileIn = new FileInputStream("hashmap.ser");
-             ObjectInputStream in = new ObjectInputStream(fileIn)) {
+    public void saveFile() {
+        lock.writeLock().lock();
+        try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(STORAGE_FILE))) {
+            out.writeObject(this.dictionary);
+            logger.info("Dictionary saved successfully");
+        } catch (IOException e) {
+            logger.error("Error saving dictionary: " + e.getMessage(), e);
+            throw new RuntimeException("Failed to save dictionary", e);
+        } finally {
+            lock.writeLock().unlock();
+        }
+    }
+
+    private void loadFile() {
+        lock.writeLock().lock();
+        try (ObjectInputStream in = new ObjectInputStream(new FileInputStream(STORAGE_FILE))) {
             @SuppressWarnings("unchecked")
             HashMap<String, HashMap<String, String>> map = 
                 (HashMap<String, HashMap<String, String>>) in.readObject();
-            System.out.println("HashMap deserialized from hashmap.ser");
-            this.dictionary = map;
+            dictionary.clear();
+            dictionary.putAll(map);
+            logger.info("Dictionary loaded successfully");
         } catch (IOException | ClassNotFoundException e) {
-            e.printStackTrace();
+            logger.warn("Could not load dictionary file, starting with empty dictionary: " + e.getMessage());
+        } finally {
+            lock.writeLock().unlock();
         }
     }
 }
