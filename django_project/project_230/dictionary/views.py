@@ -19,25 +19,25 @@ def get_definition_llm(style, word):
     # Load environment variables from .env file
     load_dotenv(env_path)
     
-    # Get API key
+    # Load Google API key from .env file 🔑
     api_key = os.getenv('GOOGLE_API_KEY')
     if not api_key:
         return "Error: Google API key not configured. Please check your .env file."
     
     try:
-        # Configure Gemini
+        # Configure Gemini 💡
         genai.configure(api_key=api_key)
         
-        # Initialize model with gemini-1.5-flash for faster responses
-        # Flash model is optimized for speed while maintaining quality
+        # Initialize model with gemini-1.5-flash for faster responses 🚀
         gemini_model = genai.GenerativeModel('gemini-1.5-flash')
 
-        # Optimize prompt to be more concise while maintaining requirements
+        # Prompt the LLM for the definition 💬
         prompt = (
-            f"Define '{word}' in {style} style. Make it:, Safe for Work, Clear, Fun yet informative, end with a period, and 1 to 2 sentences."
+            f"Define '{word}' in {style} style. Make it:, Safe for Work, Clear, "
+            f"Fun yet informative, end with a period, and 1 to 2 sentences."
         )
 
-        # Set generation config for faster responses
+        # configure gemini model request parameters 📝
         response = gemini_model.generate_content(
             prompt,
             generation_config={
@@ -47,7 +47,8 @@ def get_definition_llm(style, word):
                 'max_output_tokens': 40  # Limit response length
             }
         )
-        return (response.text)
+
+        return response.text # Return the definition
     except Exception as e:
         return f"Error generating definition: {str(e)}"
 
@@ -61,13 +62,13 @@ def get_definition_service(request):
             if not style or not word:
                 return render(request, "home.html", {"definition": "Please provide both style and word"})
             
-            # URL encode parameters to handle special characters
+            # URL encode parameters to handle special characters 
             encoded_style = quote(style)
             encoded_word = quote(word)
             encoded_base_url = "http://localhost:8080/dictionary"
             
-            # First try to get from Java service
             try:
+                # Try to get definition from Java service 📚
                 response = requests.get(
                     f"{encoded_base_url}/get",
                     params={"style": encoded_style, "word": encoded_word},
@@ -76,24 +77,27 @@ def get_definition_service(request):
                 response.raise_for_status()
                 
                 if response.text != "Definition not found":
-                    # Decode the URL-encoded definition before rendering
+                    # Decode the URL-encoded definition before rendering 🔍
                     decoded_definition = unquote(response.text)
                     return render(request, "home.html", {
                         "definition": decoded_definition,
                         "selected_style": style
                     })
                 
-                # If not found, get from LLM
-                if style == "N/A":
+                if style == "N/A": # Handle case where no style is selected ⚠️
                     return render(request, "home.html", {"definition": "Please select a style"})
+                
+                # If no definition is found, get from LLM 🤖
                 answer_llm = get_definition_llm(style, word)
+
+                # Handle LLM error
                 if "Error:" in answer_llm:
                     return render(request, "home.html", {
                         "definition": answer_llm,
                         "selected_style": style
                     })
-                    
-                # Store in Java service
+                
+                # Store in Java HashTable micro-service 📚
                 store_response = requests.post(
                     f"{encoded_base_url}/add",
                     params={
@@ -105,6 +109,7 @@ def get_definition_service(request):
                 )
                 store_response.raise_for_status()
                 
+                # Render the definition on the home page 🎨
                 return render(request, "home.html", {
                     "definition": answer_llm,
                     "selected_style": style
