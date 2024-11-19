@@ -26,7 +26,8 @@ replay_pid*
 # Environment variables
 .env
 .venv
-
+venv
+myenv
 # Python-related files
 __pycache__/
 *.pyc
