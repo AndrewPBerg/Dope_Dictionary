@@ -16,7 +16,7 @@ public class DictionaryController {
     }
 
     @GetMapping("/get")
-    public ResponseEntity<String> get(
+    public ResponseEntity<String> get(  
             @RequestParam(required = true) String style,
             @RequestParam(required = true) String word) {
         try {
