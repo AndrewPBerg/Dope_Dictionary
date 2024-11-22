@@ -44,7 +44,7 @@ def get_definition_llm(style, word):
                 'temperature': 0.5,  # Lower temperature for faster, more focused responses
                 'top_p': 0.8,       # Reduce sampling space
                 'top_k': 30,        # Limit token selection
-                'max_output_tokens': 40  # Limit response length
+                'max_output_tokens': 60  # Limit response length
             }
         )
 
